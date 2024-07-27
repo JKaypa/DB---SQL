@@ -1,6 +1,8 @@
-DataBase Design
+# **Entity Relationship Diagram**
 
-Movie App
+To avoid redundancy, the fields created_at and updated_at are not included in this diagram, but they are in the relations that structures the database.
+
+## Movie DB Schema
 
 ```mermaid
 erDiagram
