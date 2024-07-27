@@ -55,13 +55,14 @@ EXECUTE FUNCTION update_timestamp();
 
 
 
+CREATE TYPE GENDER AS ENUM('male', 'female', 'non-binary');
 CREATE TABLE person(
 	id SERIAL PRIMARY KEY,
 	first_name VARCHAR(50) NOT NULL,
 	last_name VARCHAR(50) NOT NULL,
 	biography TEXT,
 	date_of_birth DATE,
-	gender ENUM('male', 'female', 'non-binary'),
+	gender GENDER,
 	country_id INTEGER REFERENCES country(id) ON DELETE SET NULL,
 	photo_id INTEGER REFERENCES file(id) ON DELETE SET NULL UNIQUE,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -94,11 +95,12 @@ EXECUTE FUNCTION update_timestamp();
 
 
 
+CREATE TYPE ROLE AS ENUM('leading', 'supporting', 'background');
 CREATE TABLE character(
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(20) UNIQUE NOT NULL,
 	description TEXT,
-	role ENUM('leading', 'supporting', 'background'),
+	role ROLE,
 	movie_id INTEGER REFERENCES movie(id) ON DELETE CASCADE NOT NULL,
 	actor_id INTEGER REFERENCES person(id) ON DELETE SET NULL,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -159,8 +161,8 @@ CREATE TABLE movie_genres(
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TRIGGER update_movie_genre_updated_at
-BEFORE UPDATE ON movie_genre
+CREATE TRIGGER update_movie_genres_updated_at
+BEFORE UPDATE ON movie_genres
 FOR EACH ROW
 EXECUTE FUNCTION update_timestamp();
 
@@ -173,7 +175,7 @@ CREATE TABLE movie_actors(
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TRIGGER update_actors_movies_updated_at
-BEFORE UPDATE ON actors_movies
+CREATE TRIGGER update_movie_actors_updated_at
+BEFORE UPDATE ON movie_actors
 FOR EACH ROW
 EXECUTE FUNCTION update_timestamp();

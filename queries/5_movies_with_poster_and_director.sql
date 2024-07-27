@@ -28,8 +28,8 @@ FROM
 	movie
 	LEFT JOIN file AS poster ON movie.poster_id = poster.id
 	LEFT JOIN person AS director ON movie.director_id = director.id
-	LEFT JOIN movie_genre ON movie_genre.movie_id = movie.id
-	LEFT JOIN genre ON movie_genre.genre_id = genre.id
+	LEFT JOIN movie_genres ON movie_genres.movie_id = movie.id
+	LEFT JOIN genre ON movie_genres.genre_id = genre.id
 WHERE
 	movie.country_id = 1
 	AND movie.release_date > '2022-01-01'

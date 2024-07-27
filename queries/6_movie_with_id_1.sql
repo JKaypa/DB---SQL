@@ -1,5 +1,5 @@
 SELECT
-	movie.id AS movie,
+	movie.id AS movie_id,
 	movie.title,
 	movie.release_date,
 	movie.duration,
@@ -61,18 +61,18 @@ SELECT
 		)
 	) AS actors,
 	JSONB_AGG(
-		JSON_BUILD_OBJECT('genre_id', genre_id, 'name', genre.name)
+		JSON_BUILD_OBJECT('genre_id', genre.id, 'name', genre.name)
 	) AS genres
 FROM
 	movie
 	LEFT JOIN file AS poster ON movie.poster_id = poster.id
 	LEFT JOIN person AS director ON movie.director_id = director.id
 	LEFT JOIN file AS director_photo ON director.photo_id = director_photo.id
-	LEFT JOIN actors_movies ON actors_movies.movie_id = movie.id
-	LEFT JOIN person AS actor ON actors_movies.actor_id = actor.id
+	LEFT JOIN movie_actors ON movie_actors.movie_id = movie.id
+	LEFT JOIN person AS actor ON movie_actors.actor_id = actor.id
 	LEFT JOIN file AS actor_photo ON actor.photo_id = actor_photo.id
-	LEFT JOIN movie_genre ON movie_genre.movie_id = movie.id
-	LEFT JOIN genre ON movie_genre.genre_id = genre.id
+	LEFT JOIN movie_genres ON movie_genres.movie_id = movie.id
+	LEFT JOIN genre ON movie_genres.genre_id = genre.id
 WHERE
 	movie.id = 1
 GROUP BY
